@@ -4,19 +4,19 @@ options = ["-key","-f"]
 config = {
     "mode":None, 
     "key":None,
-    "filename":None
+    "filepath":None
 }
 
 def usage():
     print("\n")
     print("HillCipher implementation.\n\n")
-    print("usage: \n\tprogram.py <mode> -key <key> [-f <filename>]\n")
+    print("usage: \n\tprogram.py <mode> -key <key> [-f <filepath>]\n")
     print("modes:")
     print("encrypt\t Execute in encryption mode. Encrypt all input.")
     print("decrypt\t Execute in decryption mode. Decrypt all input.\n\n")
     print("options:")
     print("-key <key>\t The key to use in encryption or decryption mode. (required)")
-    print("-f <filename>\t If provided, the program will encrypt or decrypt the "+
+    print("-f <filepath>\t If provided, the program will encrypt or decrypt the "+
           "file specified by <filename>. (optional)")
     exit()
 
@@ -65,6 +65,6 @@ def validate_args(argv):
             print(f"Unexpected value {filename} for -f.")
             usage()
 
-        config["filename"] = filename
+        config["filepath"] = filename
 
     return config
