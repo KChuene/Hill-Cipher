@@ -5,31 +5,85 @@ from hillcipher import encrypt, decrypt
 from argshandler import validate_args
 
 encryption_ext = ".hc"
+decryption_suffx = "decrypt"
+
+def decrypt_binary(filepath, key):
+    input_file = None
+    output_file = None
+
+    
+    try:
+        input_file = open(filepath, "rb")
+        output_file = open(filepath + decryption_suffx, "wb")
+
+        print(f"[*] Decrypting {input_file.name} (binary mode)...")
+        for line in input_file:
+            dec_result = decrypt(str(line), key) # decryp requires string
+            output_file.write(bytes(dec_result, "utf-8"))
+
+    except Exception as ex:
+        print(f"Error: Decryption {filepath}")
+        raise ex
+    
+    finally:
+        if input_file:
+            input_file.close()
+
+        if output_file:
+            output_file.close()
 
 def encrypt_textfile(filepath, key):
-    input_file = open(filepath, "r") # currently cannot encrypt binary files
-    output_file = open(filepath + encryption_ext, "w")
-    try:
-        print(f"[*] Encrypting {input_file.name} ...")
-        for line in input_file:
-            enc_line = encrypt(line, key)
-            output_file.write((enc_line.encode("utf-7")).decode("utf-8")+"\n")
 
-        print("[*] Done.")
+    input_file = None
+    output_file = None
+
+    try:
+        input_file = open(filepath, "r")
+        output_file = open(filepath + encryption_ext, "w")
+
+        print(f"[*] Encrypting {input_file.name} (text mode)...")
+        for line in input_file:
+
+            enc_line = encrypt( line , key)
+            output_file.write(str( enc_line.encode("utf-8") )) # write requires string
 
     except Exception as ex:
         print(f"Error: Encrypting {filepath}")
-
-        output_file.close()
-        os.remove(filepath + encryption_ext) # undo operation
+        raise ex
 
     finally:
-        input_file.close()
+        if input_file:
+            input_file.close()
 
-        if not output_file.closed:
+        if output_file:
             output_file.close()
 
-        
+def encrypt_binaryfile(filepath, key):
+
+    input_file = None
+    output_file = None
+
+    try:
+        input_file = open(filepath, "rb")
+        output_file = open(filepath + encryption_ext, "wb")
+
+        print(f"[*] Encrypting {input_file.name} (binary mode) ...")
+        for line in input_file:
+
+            enc_line = encrypt( str(line) , key) # encrypt requires strings
+            output_file.write(bytes(enc_line, "utf-8")) # encoding requires bytes
+
+    except Exception as ex:
+        print(f"Error: Encrypting {filepath}")
+        raise ex
+
+    finally:
+        if input_file:
+            input_file.close()
+
+        if output_file:
+            output_file.close()
+    
 
 def prompt(config):
     key = config["key"]
@@ -54,9 +108,18 @@ def main():
         if not config["filepath"]:
             prompt(config)
 
-        else: #  encrypt/decrypt specified file
-            if config["mode"] == "encrypt":
+        elif config["mode"] == "encrypt": #  encrypt/decrypt specified file
+
+            if config["isbinary"]:
+                encrypt_binaryfile(config["filepath"], config["key"])
+            
+            else:
                 encrypt_textfile(config["filepath"], config["key"])
+
+        else:
+            decrypt_binary(config["filepath"], config["key"])
+
+        print("[*] Done.")
 
     except KeyboardInterrupt:
         pass
