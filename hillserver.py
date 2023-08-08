@@ -2,14 +2,16 @@ import socket
 from optparse import OptionParser
 import threading
 
-
-key_lookup_table = {
-    "host": None,
-    "user": None,
-    "key": None
-}
-
+modules = ["secured", "plain"]
+options = ["-h", "-host", "-port", "-basekey", "-invites"]
 make_secure = False
+
+client = {
+    "host": None, # ipv4 address
+    "user": None, # username
+    "key": None,
+    "socket": None # socket
+}
 connections = []
 
 def parse_args():
@@ -27,11 +29,19 @@ def send_message(connection, data):
         bytes_sent += connection.send(data[bytes_sent:])
 
 
-def forward_message(data):
+def forward_message(data, sender_address):
     global connections
 
+    #TODO: decrypt data using sender key
+
     for connection in connections:
-        send_thread = threading.Thread(target=send_message, args=(connection, data))
+        #TODO: encrypt data using recipient key
+
+        # skip forwarding message to original sender
+        if connection["host"]==sender_address:
+            continue
+
+        send_thread = threading.Thread(target=send_message, args=(connection["socket"], data))
         send_thread.start()
 
 
@@ -42,11 +52,15 @@ def recv_messages(conn_sock, address):
         while True:
             data = conn_sock.recv(1024)
 
-            print(f">>> forward {len(data)} bytes from thread {threading.get_native_id}")
-            forward_message(data)
+            if len(data) > 0:
+                print(f">>> forward {len(data)} bytes from {address}")
+                forward_message(data, address)
 
     except KeyboardInterrupt as keyInterrupt:
         terminate()
+
+    except Exception:
+        pass
 
     return None
 
@@ -63,10 +77,13 @@ def spawn_listener(host, port):
     while True:
         sock.listen()
         conn_sock, address_info = sock.accept()
-
         print(f"--> Connection from {address_info[0]} port {address_info[1]}")
-        exit()
-        connections.append(conn_sock)
+
+        # log client info and connection sock
+        client["host"] = address_info[0]
+        client["socket"] = conn_sock
+        connections.append(client)
+
         recv_thread = threading.Thread(target=recv_messages, args=(conn_sock, address_info[0]))
         recv_thread.start()
 
@@ -104,3 +121,8 @@ def main():
 
 if __name__=="__main__":
     main()
+
+
+#TODO: Upon connection received client ID hash, and validate ID against list of authorized ID hashes
+#TODO: Use client ID as salt to form client key
+#TODO: Decrypt received data using sender key, Forward data for each recipient encrypted with recipient key
