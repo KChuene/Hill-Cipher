@@ -18,7 +18,7 @@ def decrypt_binary(filepath, key):
 
         print(f"[*] Decrypting {input_file.name} (binary mode)...")
         for line in input_file:
-            dec_result = decrypt(str(line), key) # decryp requires string
+            dec_result = decrypt(str(line), key) # decrypt requires string
             output_file.write(bytes(dec_result, "utf-8"))
 
     except Exception as ex:

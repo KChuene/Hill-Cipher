@@ -1,0 +1,25 @@
+PS C:\Users\pk111\OneDrive\Desktop\Github\Hill-Cipher> python .\main.py decrypt -key R3dPill
+(Max 5100 chars) Ctrl-C to exit
+<message> : 子疰罩怍硅薽匌水穙䀍別噽捹糡觵㿕䦵以䌅塅敁恧端蝭䘿寽栵塸炢穙㔕㶡䑙䟄愀溉押稒蚕嗿徽欩䝞怮涱嫸犪纑㢁䇭乹䠔噼挥子疰罩怍硅薽匌水穙䔛噯媵䥲挒焑䉼嫼曱挓糑袱搚聶豽䶸橶潡喧廕氁柖舜轱⧟㒧㨹塸炢穙㝭䀩䛡䜫必浅梮萆釹掛縏讥怆瞎蕑
+
+Plaintext:      Morpheus: Hello, old fried.Neo: How have you been, m??Morpheus: Busy as always you know...Neo: Not surprised
+
+(Max 5100 chars) Ctrl-C to exit
+<message> :
+PS C:\Users\pk111\OneDrive\Desktop\Github\Hill-Cipher> python .\main.py decrypt -key R3dPi
+(Max 5100 chars) Ctrl-C to exit
+<message> : 子疰罩怍硅薽匌水穙䀍別噽捹糡觵㿕䦵以䌅塅敁恧端蝭䘿寽栵塸炢穙㔕㶡䑙䟄愀溉押稒蚕嗿徽欩䝞怮涱嫸犪纑㢁䇭乹䠔噼挥子疰罩怍硅薽匌水穙䔛噯媵䥲挒焑䉼嫼曱挓糑袱搚聶豽䶸橶潡喧廕氁柖舜轱⧟㒧㨹塸炢穙㝭䀩䛡䜫必浅梮萆釹掛縏讥怆瞎蕑
+
+Plaintext:      dx[qKz ,OWvU5(di        {O}jcnYE%<|k]u)gzznM0E+dx[qKz ,Jg~zx  zv^{Y2\(Xy\92#cnYE&ByV{NnJ
+
+(Max 5100 chars) Ctrl-C to exit
+<message> :
+PS C:\Users\pk111\OneDrive\Desktop\Github\Hill-Cipher> python .\main.py decrypt -key R3dPilI
+(Max 5100 chars) Ctrl-C to exit
+<message> : 子疰罩怍硅薽匌水穙䀍別噽捹糡觵㿕䦵以䌅塅敁恧端蝭䘿寽栵塸炢穙㔕㶡䑙䟄愀溉押稒蚕嗿徽欩䝞怮涱嫸犪纑㢁䇭乹䠔噼挥子疰罩怍硅薽匌水穙䔛噯媵䥲挒焑䉼嫼曱挓糑袱搚聶豽䶸橶潡喧廕氁柖舜轱⧟㒧㨹塸炢穙㝭䀩䛡䜫必浅梮萆釹掛縏讥怆瞎蕑
+
+Plaintext:      ɱÍ𤕂ʰË𤔝ʄÍ𤔞Ɣ𤗕ʾÒ𤔖ƀZ𤗽Ƞ¯𤕗ʭÖ𤔚Ȧ±𤕙ɝ¿𤕓ŠR𤗿ɋÉ𤔲ʫÄ𤔪Ȳo𤖘ɇÆ𤔶ʃÂ𤔹ǀf𤖯Ș𤕾ɱÍ𤕂ʰË𤔝ʄÍ𤔞Ʀ𤗕ɚÌ𤔨Ȝ¿𤕐ʭÑ𤔣ʾá𤔐ǿË
+𤕾Ɇp𤖇˗Ù𤔉ĩY𤘍ɝ¿𤕓ūT𤗻ɅÅ𤔷˧á𤓺ˉÙ𤔊ʱÇ𤔝
+
+(Max 5100 chars) Ctrl-C to exit
+<message> :

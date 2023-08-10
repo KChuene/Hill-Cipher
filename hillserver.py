@@ -6,13 +6,19 @@ modules = ["secured", "plain"]
 options = ["-h", "-host", "-port", "-basekey", "-invites"]
 make_secure = False
 
-client = {
-    "host": None, # ipv4 address
-    "user": None, # username
-    "key": None,
-    "socket": None # socket
-}
+
 connections = []
+
+def log_newconnection(host, socket):
+    global connections
+
+    client = {
+        "host": host, # ipv4 address
+        "user": None, # username
+        "key": None,
+        "socket": socket # socket
+    }
+    connections.append(client)
 
 def parse_args():
     optparser = OptionParser()
@@ -22,12 +28,13 @@ def parse_args():
 
     return optparser.parse_args()
 
-def send_message(connection, data):
+def send_message(sender, connection, data):
     bytes_sent = connection.send(data)
 
     while bytes_sent != len(data):
         bytes_sent += connection.send(data[bytes_sent:])
 
+    print(f"sent to: {sender}")
 
 def forward_message(data, sender_address):
     global connections
@@ -41,7 +48,7 @@ def forward_message(data, sender_address):
         if connection["host"]==sender_address:
             continue
 
-        send_thread = threading.Thread(target=send_message, args=(connection["socket"], data))
+        send_thread = threading.Thread(target=send_message, args=(sender_address, connection["socket"], data))
         send_thread.start()
 
 
@@ -59,7 +66,7 @@ def recv_messages(conn_sock, address):
     except KeyboardInterrupt as keyInterrupt:
         terminate()
 
-    except Exception:
+    except Exception as ex:
         pass
 
     return None
@@ -80,14 +87,16 @@ def spawn_listener(host, port):
         print(f"--> Connection from {address_info[0]} port {address_info[1]}")
 
         # log client info and connection sock
-        client["host"] = address_info[0]
-        client["socket"] = conn_sock
-        connections.append(client)
+        log_newconnection(address_info[0], conn_sock)
 
         recv_thread = threading.Thread(target=recv_messages, args=(conn_sock, address_info[0]))
         recv_thread.start()
 
 def terminate():
+    for connection in connections:
+        connection["socket"].shutdown() # inform other end's socket of closure
+        connection["socket"].close()
+
     print("Bye bye!")
     exit()
 
@@ -126,3 +135,4 @@ if __name__=="__main__":
 #TODO: Upon connection received client ID hash, and validate ID against list of authorized ID hashes
 #TODO: Use client ID as salt to form client key
 #TODO: Decrypt received data using sender key, Forward data for each recipient encrypted with recipient key
+#TODO: Improve exception handingling, especially against user input

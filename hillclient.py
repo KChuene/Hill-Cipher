@@ -1,7 +1,30 @@
 import socket
 import threading
+import sys
 
 from hillcipher import encrypt, decrypt
+
+def usage():
+    print("Usage:\n\t")
+    print("program.py -uname <user_name> -key <encryption_key> -host <svr_address> -port <port>")
+    exit()
+
+def safe_read_arg(option, program_args):
+    if not option in program_args: # option must be valid
+        print(f"Not all mandatory options were provided.\n")
+        usage()
+
+    arg_index = program_args.index(option) + 1 # must not be null
+    if arg_index >= len(program_args):
+        print(f"Argument for option {option} not found.")
+        usage()
+
+    arg = program_args[arg_index]
+    if arg in ("-uname", "-key", "-host", "-port"): # argument must not be an option
+        print(f"Invalid argument {arg}. Cannot be an option.")
+        usage()
+
+    return arg
 
 def connect_to_svr(address, port):
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM) # ipv4 tcp socket
@@ -28,7 +51,8 @@ def recv_messages(sock, key):
             message : bytes = sock.recv(1024)
             decoded_msg = message.decode(encoding='utf-8', errors='replace')
 
-            print(f"\r{decrypt(decoded_msg, key)}\n")
+            print(f"\n{decrypt(decoded_msg, key)}\n")
+            print("~~: ", end="", flush=True)
 
         except InterruptedError as interruptErr:
             print("Error: Receiver interrupted. Moving on...")
@@ -53,10 +77,11 @@ def send_message(sock, message : str):
 def prompt(uname, key, sock):
     print("Welcome to HushCat!")
     try:
+        print("~~: ", end="", flush=True)
         while True:
-            message = input("<enter message> (Ctrl-C to exit): ")
+            message = input()
             
-            send_message( sock, encrypt(f"<{uname}>: "+ message, key) )
+            send_message( sock, encrypt(f"{uname}: "+ message, key) )
 
     except InterruptedError:
         exit()
@@ -74,8 +99,12 @@ def terminate():
 
 def main():
     
-    sock = connect_to_svr("192.168.56.1", 890)
-    key = "L0v3IsK3y"
+    uname = safe_read_arg("-uname", sys.argv)
+    key = safe_read_arg("-key", sys.argv)
+    host = safe_read_arg("-host", sys.argv)
+    port = int(safe_read_arg("-port", sys.argv))
+
+    sock = connect_to_svr(host, port)
     
     if not sock:
         print("Connection failed. Aborting!")
@@ -83,7 +112,7 @@ def main():
 
     receiver_thread = threading.Thread(target=recv_messages, args=(sock, key))
     receiver_thread.start() # have separate thread to constantly receive messages
-    prompt("CommanderX", key, sock)
+    prompt(uname, key, sock)
 
 
 if __name__=="__main__":
