@@ -1,0 +1,15 @@
+PS C:\Users\pk111\OneDrive\Desktop\Github\Hill-Cipher> python .\main.py decrypt -key Love
+(Max 5100 chars) Ctrl-C to exit
+<message> : ㋅㦥儧崝㨏䣝Ἑ❝䖠俴以履᫱⃩⎍⹇刴弆呱拇㴚㶴䱿堝丼嵒⮑㪹劒慄㭞㰠兄屴㚙㟉㉁䇃㯍㲅䣰嘶㍚䓜々䆣䮡坓以履㗎㱨䰐垸⮏㍷〘㇞䠌哔ㇵ䅍⤨⮎㎐㔆凑忑䶤屦䫬圐伙婻⯝㬯兹師᫱⃩亇娧丙嵣䟀呞ᮉ⇕䎌䲺䞺叆⯝㬯厰慔け䈙⌀⫪㋅㦥儧崝㨏䣝Ἑ❝㌝㭋䧈器厶懬᠜᰼
+
+Plaintext:      <Levi>: Well, I just wanted to say hi, that's alll<Sam>: Yeah, I appreciate it, brudda. Peace out :)<Levi>: CHeers!!
+
+(Max 5100 chars) Ctrl-C to exit
+<message> :
+PS C:\Users\pk111\OneDrive\Desktop\Github\Hill-Cipher> python .\main.py decrypt -key Lov3
+(Max 5100 chars) Ctrl-C to exit
+<message> : ㋅㦥儧崝㨏䣝Ἑ❝䖠俴以履᫱⃩⎍⹇刴弆呱拇㴚㶴䱿堝丼嵒⮑㪹劒慄㭞㰠兄屴㚙㟉㉁䇃㯍㲅䣰嘶㍚䓜々䆣䮡坓以履㗎㱨䰐垸⮏㍷〘㇞䠌哔ㇵ䅍⤨⮎㎐㔆凑忑䶤屦䫬圐伙婻⯝㬯兹師᫱⃩亇娧丙嵣䟀呞ᮉ⇕䎌䲺䞺叆⯝㬯厰慔け䈙⌀⫪㋅㦥儧崝㨏䣝Ἑ❝㌝㭋䧈器厶懬᠜᰼
+
+Plaintext:      j-¬E$M;­@?\°E¹DhF£A±;w·AeDªG_=fD¢9¢@­@n1£@a"V49L+Z9³B¯;¢>§Dx¯D?§C±;9A;:xµESj-¬E$Mn*¢;·D5
+(Max 5100 chars) Ctrl-C to exit
+<message> :

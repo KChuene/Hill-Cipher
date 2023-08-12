@@ -4,6 +4,8 @@ import sys
 
 from hillcipher import encrypt, decrypt
 
+prompt_text : str = "<You>: "
+
 def usage():
     print("Usage:\n\t")
     print("program.py -uname <user_name> -key <encryption_key> -host <svr_address> -port <port>")
@@ -51,8 +53,8 @@ def recv_messages(sock, key):
             message : bytes = sock.recv(1024)
             decoded_msg = message.decode(encoding='utf-8', errors='replace')
 
-            print(f"\n{decrypt(decoded_msg, key)}\n")
-            print("~~: ", end="", flush=True)
+            print(f"\r{' '*len(prompt_text)}\n{decrypt(decoded_msg, key)}\n") # overwrite current prompt before output new message
+            print(prompt_text, end="", flush=True)
 
         except InterruptedError as interruptErr:
             print("Error: Receiver interrupted. Moving on...")
@@ -77,11 +79,12 @@ def send_message(sock, message : str):
 def prompt(uname, key, sock):
     print("Welcome to HushCat!")
     try:
-        print("~~: ", end="", flush=True)
+        print(prompt_text, end="", flush=True)
         while True:
             message = input()
             
-            send_message( sock, encrypt(f"{uname}: "+ message, key) )
+            send_message( sock, encrypt(f"<{uname}>: "+ message, key) )
+            print(prompt_text, end="", flush=True)
 
     except InterruptedError:
         exit()
