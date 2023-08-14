@@ -4,6 +4,8 @@ import sys
 
 from hillcipher import encrypt, decrypt
 
+options = ["-uname", "-key", "-host", "-port"]
+
 prompt_text : str = "<You>: "
 
 def usage():
@@ -22,7 +24,7 @@ def safe_read_arg(option, program_args):
         usage()
 
     arg = program_args[arg_index]
-    if arg in ("-uname", "-key", "-host", "-port"): # argument must not be an option
+    if arg in options: # argument must not be an option
         print(f"Invalid argument {arg}. Cannot be an option.")
         usage()
 
@@ -53,6 +55,9 @@ def recv_messages(sock, key):
             message : bytes = sock.recv(1024)
             decoded_msg = message.decode(encoding='utf-8', errors='replace')
 
+            if not len(message) > 0:
+                continue
+
             print(f"\r{' '*len(prompt_text)}\n{decrypt(decoded_msg, key)}\n") # overwrite current prompt before output new message
             print(prompt_text, end="", flush=True)
 
@@ -82,6 +87,9 @@ def prompt(uname, key, sock):
         print(prompt_text, end="", flush=True)
         while True:
             message = input()
+
+            if not len(message) > 0:
+                continue # No message provided, no point in sending
             
             send_message( sock, encrypt(f"<{uname}>: "+ message, key) )
             print(prompt_text, end="", flush=True)

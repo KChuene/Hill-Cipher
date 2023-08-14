@@ -1,8 +1,9 @@
 import socket
-from optparse import OptionParser
+import sys
 import threading
 
-modules = ["secured", "plain"]
+# prospect of future development
+modules = ["secured", "plain"] 
 options = ["-h", "-host", "-port", "-basekey", "-invites"]
 make_secure = False
 
@@ -20,13 +21,30 @@ def log_newconnection(host, socket):
     }
     connections.append(client)
 
-def parse_args():
-    optparser = OptionParser()
-    optparser.add_option("-h", help="Show this information.")
-    optparser.add_option("-host", help="The IPv4 address to bind to.")
-    optparser.add_option("-port", help="The local port to bind to.")
+def usage():
+    print("\nHushChat server for relaying encrypted communication.\n")
+    print("Usage:\n\t program.py -host <bind_address> -port <bind_port>")
+    exit()
 
-    return optparser.parse_args()
+
+def safe_read_args(option, argv):
+    if not option in argv:
+        print("Not all mandatory options were provided.")
+        usage()
+
+
+    arg_index = argv.index(option) + 1
+    if arg_index >= len(argv):
+        print(f"Argument expected for {option}. None found.")
+        usage()
+
+    arg = argv[arg_index]
+    if arg in options:
+        print(f"Argument {arg} cannot be an option.")
+        usage()
+
+    return arg
+
 
 def send_message(sender, connection, data):
     bytes_sent = connection.send(data)
@@ -39,10 +57,7 @@ def send_message(sender, connection, data):
 def forward_message(data, sender_address):
     global connections
 
-    #TODO: decrypt data using sender key
-
     for connection in connections:
-        #TODO: encrypt data using recipient key
 
         # skip forwarding message to original sender
         if connection["host"]==sender_address:
@@ -101,20 +116,12 @@ def terminate():
     exit()
 
 def main():
-    # options, args = parse_args()
+    if len(sys.argv) <= 1 or sys.argv[1] == "-h":
+        usage()
 
     try:
-        host = "192.168.56.1"
-        port = 890
-
-        """
-        for option, arg in options, args:
-            if option=="-host":
-                host = arg
-
-            if option=="-port":
-                port = arg
-        """
+        host = safe_read_args("-host", sys.argv)
+        port = int(safe_read_args("-port", sys.argv))
         
         if host and port:
             spawn_listener(host, port)
