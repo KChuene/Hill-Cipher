@@ -1,6 +1,6 @@
 # Hill-Cipher (Under ongoing testing and debugging)
 
-An experimental project; a hill cypher encryption tool. Uses matrices (arrays of numbers) to encrypt and decrypt text. Both the message and the key (key for encrypting/decrypting) are converted into matrices in the process. The inverse of the encryption matrix is used to decrypt.
+An experimental project; a hill cypher encryption tool. Uses matrices (arrays of numbers) to encrypt and decrypt text over a client-server based chat platform. Both the message and the key (key for encrypting/decrypting) are converted into matrices in the process. The inverse of the encryption matrix is used to decrypt.
 
 In summary, if we have a 2 x 2 encryption matrix (key) then the message (converted to a 2 x n or n x 2 matrix) will be devided into n 2 x 1 (or 1 x 2) vectors each of which are multiplied with the encryption matrix to produce the cyphers (these are vectors still). The cypher text is produced from the cyphers (vectors) by convertion of the components (remember these are numbers) to corresponding unicode characters.
 
