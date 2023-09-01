@@ -1,5 +1,5 @@
 import math, copy
-from matrixops import *
+from .matrixops import *
 
 """
 Rules:

@@ -2,7 +2,7 @@ import socket
 import threading
 import sys
 
-from hillcipher import encrypt, decrypt
+from lib.hillcipher import encrypt, decrypt
 
 options = ["-uname", "-key", "-host", "-port"]
 

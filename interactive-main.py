@@ -1,8 +1,8 @@
 import sys
 import os
 
-from hillcipher import encrypt, decrypt
-from argshandler import validate_args
+from lib.hillcipher import encrypt, decrypt
+from lib.argshandler import validate_args
 
 encryption_ext = ".hc"
 decryption_suffx = "decrypt"
