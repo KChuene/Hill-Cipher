@@ -23,25 +23,12 @@ def main():
 
     try:
         # run encryption/decryption interactively (prompt) if no input/output 
-        # filename specified
-        if not config["filepath"]:
-            prompt(config)
-
-        elif config["mode"] == "encrypt": #  encrypt/decrypt specified file
-
-            if config["isbinary"]:
-                encrypt_binaryfile(config["filepath"], config["key"])
-            
-            else:
-                encrypt_textfile(config["filepath"], config["key"])
-
-        else:
-            decrypt_binary(config["filepath"], config["key"])
-
-        print("[*] Done.")
+        prompt(config)
 
     except KeyboardInterrupt:
         pass
+
+    print("\nBye bye!")
 
 
 if __name__ == "__main__":
