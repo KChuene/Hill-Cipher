@@ -1,5 +1,9 @@
 import math, copy
-from .matrixops import *
+
+import numpy as np
+
+# from .matrixops import *
+from .matrixops_np import *
 
 """
 Rules:
@@ -90,61 +94,66 @@ def fix_decrypt_error(A):
     result = copy.deepcopy(A)
     for i in range(0, len(A)):
         for j in range(0, len(A[0])):
-            result[i][j] = int(round( result[i][j] - 1 )) # round(decimal - 1)
+            result[i][j] = int(round( result[i][j] - 1))
 
     return result
 
-def encrypt(message, key):
+def encrypt(message, key_str):
     global Original
 
     # Step 1 - Select Key
-    key = make_square_length(key)
-    squareLen = get_square_length( len(key) ) 
+    key_str = make_square_length(key_str)
+    square_len = get_square_length( len(key_str) )
 
     # Step 2, 3 - Group plaintext chars, converto to decimal 
-    plaintextGroups = convert_msg_to_groups(message, squareLen)
+    plaintext_groups = convert_msg_to_groups(message, square_len)
 
-    keyMatrix = convert_to_decimal_array(key)
-    keyMatrix = create_square_matrix(keyMatrix, squareLen)
+    key_matrix = convert_to_decimal_array(key_str)
+    key_matrix = create_square_matrix(key_matrix, square_len)
+
+    if np.linalg.det(key_matrix) == 0:
+        print("<Warning> Provided key not invertible cannot decrypt encrypted text.")
 
     # Step 3 - Convert groups to vectors, Compute the Ciphetext groups: keyMatrix x plaintextGroup[i]
-    cipherGroups = []
-    Original = plaintextGroups
-    for group in plaintextGroups:
-        columnVector = [group] # Turn into a vector, necessary to pass isValidMatrix check
-        cipherGroups.append(matrix_product(keyMatrix, columnVector))
+    cipher_groups = []
+    original = plaintext_groups
+    for group in plaintext_groups:
+        column_vector = [group] # Turn into a vector, necessary to pass isValidMatrix check
+        cipher_groups.append(matrix_product(key_matrix, column_vector))
 
     # Step 4 - Convert cipher groups to ciphertext
-    ciphertext = convert_ciphergroups_to_text(cipherGroups)
+    ciphertext = convert_ciphergroups_to_text(cipher_groups)
     return ciphertext
 
-def decrypt(message, key):
+def decrypt(message, key_str):
     # Apply the encryption again, but this time converting the key to it's inverse
     # and using it as the key for encryption (this will effect decryption - reverse encryption)
 
     # Step 1 - Select Key
-    key = make_square_length(key)
-    squareLen = get_square_length( len(key) ) 
+    key_str = make_square_length(key_str)
+    square_len = get_square_length( len(key_str) )
 
     # Step 2, 3 - Group plaintext chars, converto to decimal 
-    cipherTextGroups = convert_msg_to_groups(message, squareLen)
+    ciphertext_groups = convert_msg_to_groups(message, square_len)
 
-    keyMatrix = convert_to_decimal_array(key)
-    keyMatrix = create_square_matrix(keyMatrix, squareLen)
-    keyInverse = inverse_of(keyMatrix)
+    key_matrix = convert_to_decimal_array(key_str)
+    key_matrix = create_square_matrix(key_matrix, square_len)
 
-    #identity = matrixOps.product(keyMatrix, keyInverse)
-    #matrixOps.display(identity)
+    key_matrix_inv = identity_of(key_matrix)
+    if np.linalg.det(key_matrix) == 0:
+        print("<Warning> Provided key not invertible cannot decrypt encrypted text.")
+    else:
+        key_matrix_inv = np.linalg.inv(key_matrix)
 
     # Step 3 - Convert groups to vectors, Compute the Ciphetext groups: keyInverse x plaintextGroup[i]
-    plaintextGroups = []
-    for group in cipherTextGroups:
-        columnVector = [group] # Turn into a vector, necessary to pass isValidMatrix check
-        plaintextGroups.append(matrix_product(keyInverse, columnVector))
+    plaintext_groups = []
+    for group in ciphertext_groups:
+        column_vector = [group] # Turn into a vector, necessary to pass isValidMatrix check
+        plaintext_groups.append(matrix_product(key_matrix_inv, column_vector))
 
     # Step 4 - Convert cipher groups to ciphertext
-    plaintextGroups = fix_decrypt_error(plaintextGroups)
-    plaintext = convert_ciphergroups_to_text(plaintextGroups)
+    plaintext_groups = fix_decrypt_error(plaintext_groups)
+    plaintext = convert_ciphergroups_to_text(plaintext_groups)
     return plaintext
 
 
